@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>TDSTMPSensor</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; TDSTMPSensor &#127811;</h3>
+    <fieldset>
+      <p><b>Temperature:</b> <span id="temperature">-</span></p>
+      <p><b>TDS:</b> <span id="tds">-</span></p>
+    </fieldset>
+
+    <fieldset>
+      <h3>Last 10 Readings</h3>
+      <div id="logList" style="text-align:left;">Loading log...</div>
+    </fieldset>
+
+    <div class="row"><a class="btn" href="/measurements">Live Measurements</a></div>
+    <div class="row"><a class="btn" href="/settings">Settings</a></div>
+    <div class="row"><a class="btn" href="/mqtt_send">Send MQTT command</a></div>
+    <div class="row"><a class="btn" href="/update">Firmware Upgrade</a></div>
+    <div class="row" id="logoutRow" style="display:none;"><a class="btn" href="/logout">Logout</a></div>
+    <div class="row"><a class="btn btn-danger" href="/reboot">Reboot</a></div>
+
+    <div class="footer" id="footer">
+      TDSTMPSensor<br>
+      Build: -<br>
+      Available working memory (minimum): - bytes<br>
+      WiFi signal strength: - dBm<br>
+      Uptime: -
+    </div>
+  </div>
+  <script>
+    fetch('/api/ui/home', {cache: 'no-store'})
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('temperature').textContent =
+          d.temperature_c == null ? 'Sensor unavailable' : (Number(d.temperature_c).toFixed(2) + ' C');
+        document.getElementById('tds').textContent =
+          Number(d.tds_ppm || 0).toFixed(2) + ' ppm';
+
+        const f = document.getElementById('footer');
+        f.innerHTML =
+          (d.device_name || 'TDSTMPSensor') + ' ' + (d.fw_version || '-') + '<br>' +
+          'Build: ' + (d.fw_build_stamp || '-') + '<br>' +
+          'Available working memory (minimum): ' + (d.min_free_heap ?? '-') + ' bytes<br>' +
+          'WiFi signal strength: ' + (d.rssi ?? '-') + ' dBm<br>' +
+          'Uptime: ' + (d.uptime || '-');
+        if (d.web_login_required) document.getElementById('logoutRow').style.display = 'block';
+      });
+
+    fetch('/api/ui/log', {cache: 'no-store'})
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById('logList').innerHTML = html;
+      })
+      .catch(() => {
+        document.getElementById('logList').textContent = 'Log unavailable right now.';
+      });
+  </script>
+</body>
+</html>

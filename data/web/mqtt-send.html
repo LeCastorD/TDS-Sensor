@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Send MQTT command</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Send MQTT command &#127811;</h3>
+    <div class="row"><a class="btn" href="/">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+
+    <fieldset>
+      <form method="POST" action="/mqtt_send">
+        Topic:<br><input id="topic" name="topic"><br><br>
+        Payload:<br><textarea id="payload" name="payload"></textarea><br><br>
+        <button type="submit">Publish</button>
+      </form>
+    </fieldset>
+
+    <fieldset>
+      <b>Examples</b><br><br>
+      <button type="button" onclick="setExample('cmd')">Sample now</button><br><br>
+      <button type="button" onclick="setExample('ha_sample')">HA sample now</button><br><br>
+      <button type="button" onclick="setExample('ha_publish')">Set publish interval</button>
+    </fieldset>
+  </div>
+  <script>
+    const q = new URLSearchParams(window.location.search);
+    if (q.get('sent') === '1' || q.get('sent') === '0') {
+      const m = document.getElementById('msg');
+      m.style.display = 'block';
+      m.textContent = q.get('sent') === '1' ? 'MQTT message published.' : 'MQTT publish failed.';
+    }
+
+    fetch('/api/ui/home', {cache: 'no-store'})
+      .then(r => r.json())
+      .then(d => {
+        const base = d.mqtt_base || 'tds_tmp_sensor/tds_tmp_sensor';
+        document.getElementById('topic').value = base + '/cmd';
+      });
+
+    function setExample(kind) {
+      fetch('/api/ui/home', {cache: 'no-store'})
+        .then(r => r.json())
+        .then(d => {
+          const base = d.mqtt_base || 'tds_tmp_sensor/tds_tmp_sensor';
+          if (kind === 'cmd') {
+            topic.value = base + '/cmd';
+            payload.value = '{"cmd":"sample_now"}';
+          } else if (kind === 'ha_sample') {
+            topic.value = base + '/ha/cmd';
+            payload.value = '{"ha":"sample_now"}';
+          } else if (kind === 'ha_publish') {
+            topic.value = base + '/ha/cmd';
+            payload.value = '{"ha":"set_publish_interval","seconds":60}';
+          }
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Sensor Settings</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Sensor Settings &#127811;</h3>
+    <div class="row"><a class="btn" href="/settings">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+    <fieldset>
+      <form id="sensor_settings_form" method="POST" action="/settings/sensors_save">
+        Temperature sensor model:<br><input id="temp_sensor_model" disabled><br><br>
+        TDS calibration factor:<br><input id="tds_calibration_factor" name="tds_calibration_factor" type="text" inputmode="decimal"><br><br>
+        TDS offset (ppm):<br><input id="tds_offset_ppm" name="tds_offset_ppm" type="text" inputmode="decimal"><br><br>
+        Temperature offset (C):<br><input id="temp_offset_c" name="temp_offset_c" type="text" inputmode="decimal"><br><br>
+        ADC reference voltage:<br><input id="tds_vref" name="tds_vref" type="text" inputmode="decimal"><br><br>
+        Temperature compensation cutoff (V):<br><input id="tds_temp_comp_cutoff_v" name="tds_temp_comp_cutoff_v" type="text" inputmode="decimal"><br><br>
+        Sample interval (s):<br><input id="sample_interval_sec" name="sample_interval_sec" type="text" inputmode="decimal"><br><br>
+        Publish interval (s):<br><input id="publish_interval_sec" name="publish_interval_sec" type="text" inputmode="decimal"><br><br>
+        Log Sample interval (m):<br><input id="log_sample_interval_min" name="log_sample_interval_min" type="text" inputmode="decimal"><br><br>
+        <button type="submit">Save Sensor Settings</button>
+      </form>
+    </fieldset>
+  </div>
+  <script>
+    document.getElementById('sensor_settings_form').addEventListener('submit', () => {
+      [
+        'tds_calibration_factor',
+        'tds_offset_ppm',
+        'temp_offset_c',
+        'tds_vref',
+        'tds_temp_comp_cutoff_v',
+        'sample_interval_sec',
+        'publish_interval_sec',
+        'log_sample_interval_min'
+      ].forEach(id => {
+        const el = document.getElementById(id);
+        el.value = (el.value || '').replace(/,/g, '.').trim();
+      });
+    });
+
+    fetch('/api/ui/settings/sensors', {cache: 'no-store'}).then(r => r.json()).then(d => {
+      document.getElementById('temp_sensor_model').value = d.temp_sensor_model || '';
+      document.getElementById('tds_calibration_factor').value = d.tds_calibration_factor ?? 1;
+      document.getElementById('tds_offset_ppm').value = d.tds_offset_ppm ?? 0;
+      document.getElementById('temp_offset_c').value = d.temp_offset_c ?? 0;
+      document.getElementById('tds_vref').value = d.tds_vref ?? 3.3;
+      document.getElementById('tds_temp_comp_cutoff_v').value = d.tds_temp_comp_cutoff_v ?? 2.3396;
+      document.getElementById('sample_interval_sec').value = d.sample_interval_sec ?? 10;
+      document.getElementById('publish_interval_sec').value = d.publish_interval_sec ?? 60;
+      document.getElementById('log_sample_interval_min').value = d.log_sample_interval_min ?? 15;
+    });
+    const q = new URLSearchParams(window.location.search);
+    if (q.get('saved') === '1') {
+      const m = document.getElementById('msg');
+      m.style.display = 'block';
+      m.textContent = 'Sensor settings saved.';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Live Measurements</title>
+  <link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+  <div class="main">
+    <h3>&#127811; Live Measurements &#127811;</h3>
+    <div class="row"><a class="btn" href="/">Back</a></div>
+    <div class="msg" id="msg" style="display:none;"></div>
+
+    <fieldset>
+      <p><b>Temperature:</b> <span id="temperature">-</span></p>
+      <p><b>TDS:</b> <span id="tds">-</span></p>
+      <p><b>Raw ADC:</b> <span id="raw_adc">-</span></p>
+      <p><b>Voltage:</b> <span id="voltage">-</span></p>
+      <p><b>MQTT:</b> <span id="mqtt_state">-</span></p>
+      <p><b>Uptime:</b> <span id="uptime">-</span></p>
+    </fieldset>
+
+    <fieldset>
+      <p><b>CSV Header:</b><br>Date, Temperature C, TDS PPM, Raw ADC, Voltage V</p>
+      <p>Showing latest 10 entries (newest first).</p>
+      <div id="logList" style="text-align:left;">Loading log...</div>
+    </fieldset>
+
+    <div class="row"><a class="btn" href="/sample_now">Sample Now</a></div>
+  </div>
+  <script>
+    const q = new URLSearchParams(window.location.search);
+    if (q.get('sampled') === '1') {
+      const m = document.getElementById('msg');
+      m.style.display = 'block';
+      m.textContent = 'Manual sample requested.';
+    }
+
+    function render() {
+      fetch('/api/ui/measurements', {cache: 'no-store'})
+        .then(r => r.json())
+        .then(d => {
+          document.getElementById('temperature').textContent =
+            d.temperature_valid ? (Number(d.temperature_c).toFixed(2) + ' C') : 'Sensor not detected';
+          document.getElementById('tds').textContent = Number(d.tds_ppm || 0).toFixed(0) + ' ppm';
+          document.getElementById('raw_adc').textContent = d.raw_adc ?? '-';
+          document.getElementById('voltage').textContent = Number(d.voltage || 0).toFixed(3) + ' V';
+          document.getElementById('mqtt_state').textContent =
+            d.mqtt_connected ? ('CONNECTED (' + (d.mqtt_reconnects || 0) + ')') : 'NOT CONNECTED';
+          document.getElementById('uptime').textContent = d.uptime || '-';
+        });
+    }
+
+    function renderLog() {
+      fetch('/api/ui/log', {cache: 'no-store'})
+        .then(r => r.text())
+        .then(html => {
+          document.getElementById('logList').innerHTML = html;
+        })
+        .catch(() => {
+          document.getElementById('logList').textContent = 'Log unavailable right now.';
+        });
+    }
+
+    render();
+    renderLog();
+    setInterval(render, 3000);
+    setInterval(renderLog, 10000);
+  </script>
+</body>
+</html>
