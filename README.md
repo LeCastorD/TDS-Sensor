@@ -132,17 +132,17 @@
   <li>Identify the buck-converter input and output pads. Connect the 12 V supply to <code>IN+</code> and <code>IN-</code>, observing polarity.</li>
   <li>Connect the regulated output to the controller power wiring: <code>OUT+</code> to the Wemos <code>5V</code> pin and <code>OUT-</code> to <code>GND</code>.</li>
   <li>Before connecting the Wemos, power the buck converter from the supply and adjust or verify its output at approximately 5.0 V DC.</li>
-  <li>Solder short, clearly identified leads or connector wires to the Wemos pins required by the installation: <code>5V</code>, <code>GND</code>, <code>A0</code>, <code>D2</code> / <code>GPIO4</code>, and the optional <code>D5</code> / <code>GPIO14</code> factory-reset input.</li>
+  <li>Solder short, clearly identified leads or connector wires to the Wemos pins required by the installation: <code>5V</code>, <code>3V3</code>, <code>GND</code>, <code>A0</code>, <code>D2</code> / <code>GPIO4</code>, and the optional <code>D5</code> / <code>GPIO14</code> factory-reset input. The <code>3V3</code> connection powers the SEN0244 and DS18B20.</li>
   <li>Use heat-shrink tubing on exposed solder joints and add strain relief so the connector cannot pull directly on a pad.</li>
   <li>Check continuity, polarity, and the absence of shorts between <code>5V</code> and <code>GND</code> before connecting the Wemos and sensors.</li>
 </ol>
 
-<p><strong>Important:</strong> never connect the 12 V supply directly to the Wemos <code>5V</code> pin. The Wemos and connected sensors must receive the regulated output from the buck converter.</p>
+<p><strong>Important:</strong> never connect the 12 V supply directly to the Wemos <code>5V</code> pin, and never connect the buck converter's 5 V output directly to a sensor power input. The buck converter feeds only the Wemos <code>5V</code> pin; the Wemos supplies the SEN0244 and DS18B20 from its <code>3V3</code> and <code>GND</code> pins.</p>
 
 <h3 id="buck-converter-5v-jumper">Set the buck converter to 5 V</h3>
 
 <p>
-  This buck-converter board uses solder-selectable output pads on its back. The Wemos and the sensors in this project require a regulated 5 V output, so bridge only the two pads marked <code>5V</code> before connecting the controller.
+  This buck-converter board uses solder-selectable output pads on its back. The Wemos requires a regulated 5 V input, while the SEN0244 and DS18B20 are powered from the Wemos <code>3V3</code> rail. Bridge only the two pads marked <code>5V</code> before connecting the controller.
 </p>
 
 <p align="center">
@@ -174,6 +174,7 @@
   <li>Install the buck converter, Wemos, terminal blocks, and sensor electronics in their final positions on the mounting plate before measuring wires.</li>
   <li>Route each wire along its final path and measure from connector to connector. Keep runs as short as practical, but leave enough slack to unplug a connector and remove the plate without stressing the wires.</li>
   <li>Cut and label one wire at a time. Keep power, ground, analog signal, and one-wire data conductors identifiable at both ends.</li>
+  <li>Plan the sensor power branches from the Wemos: route <code>3V3</code> to the SEN0244 supply and the DS18B20 power lead, and route <code>GND</code> back to the Wemos common ground. Do not route the buck converter's <code>5V</code> output to either sensor.</li>
   <li>Strip only the length required by the contact manufacturer, typically about 2-3 mm for small JST-XH contacts. Do not nick or remove conductor strands.</li>
   <li>Place the stripped conductor in the contact so the conductor wings crimp onto bare copper and the insulation wings support the cable jacket.</li>
   <li>Crimp with the correct die position, then inspect the joint. The conductor should be held firmly without cutting through the wire or leaving loose strands.</li>
@@ -195,7 +196,15 @@
     </tr>
     <tr>
       <td>Buck <code>OUT-</code> to Wemos <code>GND</code></td>
-      <td>Use a short ground run and maintain a common ground for the sensors.</td>
+      <td>Use a short ground run; the Wemos <code>GND</code> is the common return for both sensors.</td>
+    </tr>
+    <tr>
+      <td>Wemos <code>3V3</code> to SEN0244 and DS18B20 power</td>
+      <td>Branch the Wemos 3.3 V rail to both sensor supply inputs. Never use buck <code>OUT+</code> for sensor power.</td>
+    </tr>
+    <tr>
+      <td>Wemos <code>GND</code> to SEN0244 and DS18B20 ground</td>
+      <td>Keep the sensor returns common with the Wemos and buck-converter ground.</td>
     </tr>
     <tr>
       <td>Wemos <code>A0</code> to SEN0244 analog output</td>
@@ -235,11 +244,21 @@
       <td>Factory reset input, jumper to GND at boot</td>
     </tr>
     <tr>
-      <td><code>5V</code> and <code>GND</code></td>
-      <td>Sensor and controller power connections as appropriate</td>
+      <td><code>5V</code></td>
+      <td>Buck converter <code>OUT+</code> to Wemos power input only</td>
+    </tr>
+    <tr>
+      <td><code>3V3</code></td>
+      <td>Wemos 3.3 V output to SEN0244 and DS18B20 power inputs</td>
+    </tr>
+    <tr>
+      <td><code>GND</code></td>
+      <td>Common ground for buck converter, Wemos, SEN0244, and DS18B20</td>
     </tr>
   </tbody>
 </table>
+
+<p><strong>Power path:</strong> 12 V supply &rarr; buck converter &rarr; Wemos <code>5V</code>; Wemos <code>3V3</code> &rarr; SEN0244 and DS18B20. The sensor power inputs must not be connected directly to the 5 V buck output.</p>
 
 <p>See <a href="docs/hardware-pinout.md">docs/hardware-pinout.md</a> for board assumptions and electrical notes.</p>
 
