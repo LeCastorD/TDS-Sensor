@@ -22,6 +22,8 @@
   <li><a href="#features">Features</a></li>
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#component-reference">Component reference</a></li>
+  <li><a href="#soldering">Soldering the power and controller connections</a></li>
+  <li><a href="#crimping-and-wire-preparation">Crimping connectors and preparing wires</a></li>
   <li><a href="#wiring">Wiring</a></li>
   <li><a href="#bill-of-materials">Bill of materials</a></li>
   <li><a href="#enclosure-and-assembly">Enclosure and assembly</a></li>
@@ -78,6 +80,83 @@
     <td align="center"><img src="docs/Crimper.jpeg" alt="JST connector crimping tool" width="100%"><br><em>JST connector crimping tool</em></td>
   </tr>
 </table>
+
+<h2 id="soldering">Soldering the power and controller connections</h2>
+
+<p>
+  Disconnect the 12 V supply and USB cable before soldering. Work from the labels printed on each board and verify every connection with a multimeter before applying power.
+</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/buck-converter.jpeg" alt="Buck converter for the controller power supply" width="100%"><br><em>Buck converter</em></td>
+    <td align="center"><img src="docs/wemos-d1-mini.jpeg" alt="Wemos D1 Mini controller board" width="100%"><br><em>Wemos D1 Mini</em></td>
+  </tr>
+</table>
+
+<ol>
+  <li>Identify the buck-converter input and output pads. Connect the 12 V supply to <code>IN+</code> and <code>IN-</code>, observing polarity.</li>
+  <li>Connect the regulated output to the controller power wiring: <code>OUT+</code> to the Wemos <code>5V</code> pin and <code>OUT-</code> to <code>GND</code>.</li>
+  <li>Before connecting the Wemos, power the buck converter from the supply and adjust or verify its output at approximately 5.0 V DC.</li>
+  <li>Solder short, clearly identified leads or connector wires to the Wemos pins required by the installation: <code>5V</code>, <code>GND</code>, <code>A0</code>, <code>D2</code> / <code>GPIO4</code>, and the optional <code>D5</code> / <code>GPIO14</code> factory-reset input.</li>
+  <li>Use heat-shrink tubing on exposed solder joints and add strain relief so the connector cannot pull directly on a pad.</li>
+  <li>Check continuity, polarity, and the absence of shorts between <code>5V</code> and <code>GND</code> before connecting the Wemos and sensors.</li>
+</ol>
+
+<p><strong>Important:</strong> never connect the 12 V supply directly to the Wemos <code>5V</code> pin. The Wemos and connected sensors must receive the regulated output from the buck converter.</p>
+
+<h2 id="crimping-and-wire-preparation">Crimping connectors and preparing wires</h2>
+
+<p>
+  This section refers to the JST-XH/XH2.54 connectors listed in the BOM. Use the correct contact size and housing for the prewired connector kit; do not force a terminal into a mismatched housing.
+</p>
+
+<p align="center">
+  <img src="docs/connectors.jpeg" alt="JST-XH connector kit and prewired wires" width="48%">
+  <img src="docs/Crimper.jpeg" alt="JST connector crimping tool" width="48%">
+</p>
+
+<ol>
+  <li>Install the buck converter, Wemos, terminal blocks, and sensor electronics in their final positions on the mounting plate before measuring wires.</li>
+  <li>Route each wire along its final path and measure from connector to connector. Keep runs as short as practical, but leave enough slack to unplug a connector and remove the plate without stressing the wires.</li>
+  <li>Cut and label one wire at a time. Keep power, ground, analog signal, and one-wire data conductors identifiable at both ends.</li>
+  <li>Strip only the length required by the contact manufacturer, typically about 2-3 mm for small JST-XH contacts. Do not nick or remove conductor strands.</li>
+  <li>Place the stripped conductor in the contact so the conductor wings crimp onto bare copper and the insulation wings support the cable jacket.</li>
+  <li>Crimp with the correct die position, then inspect the joint. The conductor should be held firmly without cutting through the wire or leaving loose strands.</li>
+  <li>Perform a gentle pull test on every crimp, then insert the contact into the housing until the locking tang clicks. Confirm the pin order and connector keying before mating it.</li>
+  <li>Use a multimeter to verify continuity end-to-end and confirm that adjacent pins are not shorted.</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>Connection</th>
+      <th>Routing guidance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Buck <code>OUT+</code> to Wemos <code>5V</code></td>
+      <td>Use the shortest safe power run and verify 5 V before connection.</td>
+    </tr>
+    <tr>
+      <td>Buck <code>OUT-</code> to Wemos <code>GND</code></td>
+      <td>Use a short ground run and maintain a common ground for the sensors.</td>
+    </tr>
+    <tr>
+      <td>Wemos <code>A0</code> to SEN0244 analog output</td>
+      <td>Keep the analog signal wire short and separated from unnecessary power loops.</td>
+    </tr>
+    <tr>
+      <td>Wemos <code>D2</code> / <code>GPIO4</code> to DS18B20 data</td>
+      <td>Route directly to the temperature connector and avoid excess coiled wire.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  The goal is a compact harness with no loose loops, while retaining enough service slack for inspection, connector removal, and enclosure maintenance. See <a href="docs/BOM.md#component-images">docs/BOM.md</a> for the component images and parts list.
+</p>
 
 <h2 id="wiring">Wiring</h2>
 
