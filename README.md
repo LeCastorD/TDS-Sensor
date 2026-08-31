@@ -21,7 +21,9 @@
   <li><a href="#overview">Overview</a></li>
   <li><a href="#features">Features</a></li>
   <li><a href="#hardware">Hardware</a></li>
+  <li><a href="#component-reference">Component reference</a></li>
   <li><a href="#wiring">Wiring</a></li>
+  <li><a href="#bill-of-materials">Bill of materials</a></li>
   <li><a href="#enclosure-and-assembly">Enclosure and assembly</a></li>
   <li><a href="#build-with-platformio">Build with PlatformIO</a></li>
   <li><a href="#upload-firmware">Upload firmware</a></li>
@@ -60,7 +62,16 @@
   <li>Optional 12 V supply and 12-24 V to 5 V buck converter</li>
 </ul>
 
-<p>The complete parts list and enclosure credits are in <a href="docs/BOM.md">docs/BOM.md</a>.</p>
+<h2 id="component-reference">Component reference</h2>
+
+<p>These photos show the assembled components and their arrangement. Individual product photos are not included yet.</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Mounting%20plate.jpeg" alt="Controller, TDS meter, terminal, and cable holders on the mounting plate" width="100%"><br><em>Controller and TDS electronics on the mounting plate</em></td>
+    <td align="center"><img src="docs/Plate_in_box.jpeg" alt="Wired components installed on the mounting plate" width="100%"><br><em>Wired components installed in the enclosure</em></td>
+  </tr>
+</table>
 
 <h2 id="wiring">Wiring</h2>
 
@@ -92,6 +103,10 @@
 </table>
 
 <p>See <a href="docs/hardware-pinout.md">docs/hardware-pinout.md</a> for board assumptions and electrical notes.</p>
+
+<h2 id="bill-of-materials">Bill of materials</h2>
+
+<p>See the complete parts list, assembly hardware, 3D-printing notes, and enclosure credits in <a href="docs/BOM.md">docs/BOM.md</a>.</p>
 
 <h2 id="enclosure-and-assembly">Enclosure and assembly</h2>
 
