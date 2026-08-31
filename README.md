@@ -64,12 +64,18 @@
 
 <h2 id="component-reference">Component reference</h2>
 
-<p>These photos show the assembled components and their arrangement. Individual product photos are not included yet.</p>
+<p>The following reference photos identify the main electronic, wiring, power, and assembly tools used by this project.</p>
 
 <table>
   <tr>
-    <td align="center"><img src="docs/Mounting%20plate.jpeg" alt="Controller, TDS meter, terminal, and cable holders on the mounting plate" width="100%"><br><em>Controller and TDS electronics on the mounting plate</em></td>
-    <td align="center"><img src="docs/Plate_in_box.jpeg" alt="Wired components installed on the mounting plate" width="100%"><br><em>Wired components installed in the enclosure</em></td>
+    <td align="center"><img src="docs/wemos-d1-mini.jpeg" alt="Wemos D1 Mini ESP8266 board" width="100%"><br><em>Wemos D1 Mini</em></td>
+    <td align="center"><img src="docs/tds-sen0244.jpg" alt="DFRobot SEN0244 TDS sensor" width="100%"><br><em>DFRobot SEN0244 TDS sensor</em></td>
+    <td align="center"><img src="docs/ds18b20.jpg" alt="DFRobot DS18B20 temperature sensor" width="100%"><br><em>DFRobot DS18B20</em></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/buck-converter.jpeg" alt="12 to 5 volt buck converter" width="100%"><br><em>12-24 V to 5 V buck converter</em></td>
+    <td align="center"><img src="docs/connectors.jpeg" alt="JST XH connector kit" width="100%"><br><em>JST-XH connector kit</em></td>
+    <td align="center"><img src="docs/Crimper.jpeg" alt="JST connector crimping tool" width="100%"><br><em>JST connector crimping tool</em></td>
   </tr>
 </table>
 

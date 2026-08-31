@@ -31,3 +31,14 @@ https://www.thingiverse.com/thing:351092
 
 Box Credit :
 https://www.printables.com/model/72839-customizable-parametric-stable-and-waterproof-elec
+
+## Component images
+
+| Component | Reference image |
+| --- | --- |
+| Wemos D1 Mini (ESP8266) | ![Wemos D1 Mini](wemos-d1-mini.jpeg) |
+| DFRobot SEN0244 TDS sensor | ![DFRobot SEN0244 TDS sensor](tds-sen0244.jpg) |
+| DFRobot DS18B20 temperature probe | ![DFRobot DS18B20](ds18b20.jpg) |
+| 12-24 V to 5 V buck converter | ![Buck converter](buck-converter.jpeg) |
+| JST-XH connector kit and prewired connectors | ![JST-XH connectors](connectors.jpeg) |
+| JST connector crimping tool | ![Crimping tool](Crimper.jpeg) |
