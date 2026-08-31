@@ -31,6 +31,7 @@
   <li><a href="#build-with-platformio">Build with PlatformIO</a></li>
   <li><a href="#upload-firmware">Upload firmware</a></li>
   <li><a href="#first-setup">First setup</a></li>
+  <li><a href="#home-assistant-interface">Home Assistant interface</a></li>
   <li><a href="#security">Security</a></li>
   <li><a href="#repository-layout">Repository layout</a></li>
   <li><a href="#license">License</a></li>
@@ -278,6 +279,23 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 </ol>
 
 <p>The MQTT topic contract is documented in <a href="docs/mqtt-contract-v1.md">docs/mqtt-contract-v1.md</a>.</p>
+
+<h2 id="home-assistant-interface">Home Assistant interface</h2>
+
+<p>
+  After MQTT discovery is enabled, the device appears in Home Assistant with its sensor readings and calibration controls. The device page exposes TDS, water temperature, raw ADC, voltage, calibration factor, offsets, sample interval, publish interval, and a manual sample control.
+</p>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/HA_MQTT.jpg" alt="Home Assistant MQTT device page for the TDS sensor" width="100%"><br><em>MQTT-discovered TDS sensor device page</em></td>
+    <td align="center"><img src="docs/HA-DashBoard.jpg" alt="Home Assistant dashboard with TDS and water temperature history" width="100%"><br><em>Dashboard view with TDS and water temperature history</em></td>
+  </tr>
+</table>
+
+<p>
+  The dashboard screenshot is from a broader HydroDozer installation and includes unrelated pump controls and local network details. Those controls are not provided by this TDS Sensor firmware; use the image as an example of adding the TDS and temperature entities to a Home Assistant dashboard.
+</p>
 
 <h2 id="security">Security</h2>
 
