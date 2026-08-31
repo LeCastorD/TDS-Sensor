@@ -48,6 +48,10 @@
   This project measures total dissolved solids (TDS) and water temperature with an ESP8266 controller. It reads a DFRobot SEN0244 analog TDS sensor, applies temperature compensation using a DS18B20 probe, and publishes readings through MQTT for Home Assistant.
 </p>
 
+<p>
+  <strong>TDS range limitation:</strong> the DFRobot SEN0244 has a specified measurement range of <strong>0 to 1000 ppm</strong>. A calculated value above 1000 ppm is outside the sensor's validated recognition range and should not be treated as an accurate measurement; the sensor cannot reliably distinguish higher concentrations. The firmware may still display values above 1000 ppm because its analog calculation is not hard-clamped, but changing the calibration factor does not extend the physical sensor range. See the <a href="https://wiki.dfrobot.com/sen0244/">DFRobot SEN0244 specifications</a> for the manufacturer's range and accuracy information.
+</p>
+
 <h2 id="features">Features</h2>
 
 <ul>
@@ -449,6 +453,16 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
     <td align="center" colspan="2"><img src="docs/Reset-Factory.png" alt="TDSTMPSensor Home Assistant discovery reset and factory reset controls" width="70%"><br><em>Reset controls at the bottom of <code>/settings</code></em></td>
   </tr>
 </table>
+
+<h3>Reset controls</h3>
+
+<p>
+  <strong>Reset HA Discovery:</strong> selecting <strong>Settings &gt; Reset HA Discovery</strong> opens <code>/ha_discovery_reset</code> and asks the firmware to republish the current Home Assistant MQTT discovery messages. This is useful when Home Assistant has lost the device entities or needs the current entity definitions published again. It does not erase the device configuration, Wi-Fi credentials, sensor log, or existing Home Assistant entities.
+</p>
+
+<p>
+  <strong>Factory Reset:</strong> selecting <strong>Settings &gt; Factory Reset</strong> opens the confirmation page at <code>/factory</code>. Confirming the action at <code>/factory_confirm</code> clears the saved Wi-Fi credentials through WiFiManager, deletes <code>/config.json</code>, and reboots the controller. The web interface files and <code>/sensor_readings.csv</code> are not deleted by this handler, but the device returns to its default runtime settings and generated device identity. Wi-Fi setup and all device settings must be completed again after the reboot. The same factory reset can also be triggered by holding the <code>D5</code> / <code>GPIO14</code> reset input low for at least three seconds during boot.
+</p>
 
 <h2 id="home-assistant-interface">Home Assistant interface</h2>
 
