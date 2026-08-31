@@ -196,4 +196,4 @@ platformio.ini          PlatformIO project configuration</code></pre>
 
 <h2 id="license">License</h2>
 
-<p>No license has been selected for this project yet. Add a <code>LICENSE</code> file before accepting or requesting contributions if you want to define reuse terms.</p>
+<p>This project is licensed under the MIT License. See <a href="LICENSE">LICENSE</a> for the full text.</p>
