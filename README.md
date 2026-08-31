@@ -23,6 +23,7 @@
   <li><a href="#hardware">Hardware</a></li>
   <li><a href="#component-reference">Component reference</a></li>
   <li><a href="#soldering">Soldering the power and controller connections</a></li>
+  <li><a href="#buck-converter-5v-jumper">Buck converter 5 V jumper</a></li>
   <li><a href="#crimping-and-wire-preparation">Crimping connectors and preparing wires</a></li>
   <li><a href="#wiring">Wiring</a></li>
   <li><a href="#bill-of-materials">Bill of materials</a></li>
@@ -104,6 +105,26 @@
 </ol>
 
 <p><strong>Important:</strong> never connect the 12 V supply directly to the Wemos <code>5V</code> pin. The Wemos and connected sensors must receive the regulated output from the buck converter.</p>
+
+<h3 id="buck-converter-5v-jumper">Set the buck converter to 5 V</h3>
+
+<p>
+  This buck-converter board uses solder-selectable output pads on its back. The Wemos and the sensors in this project require a regulated 5 V output, so bridge only the two pads marked <code>5V</code> before connecting the controller.
+</p>
+
+<p align="center">
+  <img src="docs/buck-converter-back.jpeg" alt="Back of the buck converter showing the solder-selectable voltage pads" width="70%">
+</p>
+
+<ol>
+  <li>Disconnect the 12 V supply and USB cable from the project.</li>
+  <li>Turn the converter over and locate the output-selection row and the <code>5V</code> marking shown in the reference image.</li>
+  <li>Use a small amount of flux and solder to bridge the two pads for the <code>5V</code> selection.</li>
+  <li>Check that the solder bridge does not touch the neighboring voltage-selection pads. Remove any unintended bridge before powering the board.</li>
+  <li>Power the converter from the 12 V supply and measure between <code>VOUT+</code> and <code>GND</code>. Confirm approximately 5.0 V DC before connecting the Wemos.</li>
+</ol>
+
+<p><strong>Important:</strong> the jumper selects the converter output voltage; it does not replace the voltage measurement. Do not connect the Wemos until the measured output is correct.</p>
 
 <h2 id="crimping-and-wire-preparation">Crimping connectors and preparing wires</h2>
 
