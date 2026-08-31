@@ -31,7 +31,9 @@
   <li><a href="#enclosure-and-assembly">Enclosure and assembly</a></li>
   <li><a href="#build-with-platformio">Build with PlatformIO</a></li>
   <li><a href="#upload-firmware">Upload firmware</a></li>
+  <li><a href="#ota-upgrade">OTA upgrade and LittleFS data</a></li>
   <li><a href="#initial-wi-fi-configuration">Initial Wi-Fi configuration</a></li>
+  <li><a href="#default-web-ui-login">Default Web UI login</a></li>
   <li><a href="#first-setup">First setup</a></li>
   <li><a href="#home-assistant-interface">Home Assistant interface</a></li>
   <li><a href="#security">Security</a></li>
@@ -292,6 +294,49 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
   The first command uploads the firmware. The second uploads the LittleFS web interface and filesystem data. For the exported release images, see <a href="artifacts/reflash/FLASHING.md">artifacts/reflash/FLASHING.md</a>.
 </p>
 
+<h2 id="ota-upgrade">OTA upgrade and LittleFS data</h2>
+
+<p>
+  <strong>Important:</strong> the firmware and LittleFS are separate flash areas. A firmware-only OTA update normally preserves the settings, but uploading a new LittleFS image replaces the filesystem contents. This removes <code>/config.json</code> and <code>/sensor_readings.csv</code>, so all runtime settings stored in <code>config.json</code> are lost unless they are restored from a backup.
+</p>
+
+<h3>Firmware-only OTA update</h3>
+
+<ol>
+  <li>Log in to the device Web UI at <code>http://&lt;device-ip&gt;/login</code> if authentication is enabled.</li>
+  <li>From the home page select <strong>Firmware Upgrade</strong>. This opens the OTA page at <code>/update</code>.</li>
+  <li>Upload the firmware <code>.bin</code> file only, then wait for the controller to restart. Do not upload a LittleFS image unless the web interface or filesystem contents must also be updated.</li>
+  <li>After the restart, open <strong>Settings &gt; MQTT Settings</strong> and confirm that the MQTT connection is restored.</li>
+</ol>
+
+<h3>Upgrade that includes LittleFS</h3>
+
+<p>
+  Use this procedure whenever you upload a LittleFS image, including <code>pio run -t uploadfs</code> or an exported <code>*-littlefs.bin</code> image. The filesystem image contains the web interface, but it also replaces the persistent configuration and sensor log. The saved Wi-Fi credentials managed by WiFiManager may remain outside LittleFS, but the device hostname, MQTT settings, OTA credentials, time zone, sensor calibration, intervals, and other values stored in <code>config.json</code> will not.
+</p>
+
+<ol>
+  <li>
+    <strong>Back up before updating:</strong> open <strong>Settings &gt; Backup &amp; Restore</strong> at <code>/settings/backup_restore</code>. Select <strong>Download config.json</strong> and keep the downloaded file outside the project. Select <strong>Download sensor_readings.csv</strong> as well if the measurement history is needed.
+  </li>
+  <li>
+    <strong>Perform the update:</strong> upload the new firmware and LittleFS images using the method described in <a href="#upload-firmware">Upload firmware</a> or <a href="artifacts/reflash/FLASHING.md">the release flashing instructions</a>. Expect the LittleFS upload to erase the previous configuration and sensor log.
+  </li>
+  <li>
+    <strong>Reconnect after the update:</strong> use the device IP address if the previous hostname no longer works. Because the stored OTA credentials were erased, the firmware defaults are used until the backup is restored: username <code>admin</code>, password <code>adminpass</code>. Open <code>http://&lt;device-ip&gt;/login</code>.
+  </li>
+  <li>
+    <strong>Restore the configuration:</strong> open <strong>Settings &gt; Backup &amp; Restore</strong>, choose the saved <code>config.json</code> file, and select <strong>Restore config.json</strong>. Reboot the controller after the restore so the device name, MQTT topic paths, and all loaded settings are applied consistently.
+  </li>
+  <li>
+    <strong>Verify the installation:</strong> check <strong>Settings &gt; Networking</strong>, <strong>Settings &gt; MQTT Settings</strong>, <strong>Settings &gt; OTA Settings</strong>, <strong>Settings &gt; Time Synchronization</strong>, and <strong>Settings &gt; Sensor Settings</strong>. Confirm the device reports <strong>MQTT Status CONNECTED</strong>, then check Home Assistant discovery.
+  </li>
+</ol>
+
+<p>
+  If the backup is not restored, the device returns to its default identity and settings. Home Assistant uses the device name when it creates discovery identifiers and entity unique IDs, so it may create a new device while the previous entities remain orphaned. In that case the Home Assistant device and dashboard must be reconfigured. Restoring <code>config.json</code> preserves the previous identity and avoids this unnecessary reconfiguration.
+</p>
+
 <h2 id="initial-wi-fi-configuration">Initial Wi-Fi configuration</h2>
 
 <p>
@@ -310,15 +355,52 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
   The firmware calls <code>wm.autoConnect(deviceName)</code> during startup. Once credentials are saved, it attempts to reconnect automatically on later boots. For WiFiManager-specific behavior and troubleshooting, see the <a href="https://github.com/tzapu/WiFiManager">official WiFiManager documentation</a>.
 </p>
 
+<h2 id="default-web-ui-login">Default Web UI login</h2>
+
+<p>
+  The initial Web UI and OTA credentials are case-sensitive:
+</p>
+
+<table>
+  <tr><th>Username</th><td><code>admin</code></td></tr>
+  <tr><th>Password</th><td><code>adminpass</code></td></tr>
+</table>
+
+<p>
+  Open <code>http://&lt;device-ip&gt;/login</code> when Web UI login is required. These are the credentials currently defined by the firmware; <code>Admin</code> and <code>Adminpass</code> with uppercase initials will not work unless the firmware defaults are changed. After signing in, change them at <strong>Settings &gt; OTA Settings</strong>, then select <strong>Save OTA Settings</strong>. The OTA credentials are also used to access the Web UI.
+</p>
+
 <h2 id="first-setup">First setup</h2>
 
 <ol>
-  <li>Upload the firmware and LittleFS image.</li>
-  <li>Power-cycle the controller.</li>
-  <li>Join the WiFiManager access point if the device has not been configured yet.</li>
-  <li>Configure Wi-Fi, MQTT, time zone, and OTA credentials in the web interface.</li>
-  <li>Confirm that the device publishes MQTT state and appears through Home Assistant discovery.</li>
-  <li>Calibrate the TDS reading using a known reference solution.</li>
+  <li>
+    <strong>Upload the firmware and web interface:</strong> from the PlatformIO project, upload the firmware and then upload the LittleFS image. The web pages used below are stored in <code>data/web/</code> and must be present on the controller.
+  </li>
+  <li>
+    <strong>Start the controller:</strong> power-cycle the device and wait for it to finish booting. If Web UI login is enabled, open <code>http://&lt;device-ip&gt;/login</code> and sign in with the OTA user and password.
+  </li>
+  <li>
+    <strong>Configure Wi-Fi when required:</strong> if no Wi-Fi credentials are saved, join the WiFiManager access point first and follow <a href="#initial-wi-fi-configuration">Initial Wi-Fi configuration</a>. After the device joins the network, open <code>http://&lt;device-ip&gt;/</code> or <code>http://&lt;device-name&gt;.local/</code>.
+  </li>
+  <li>
+    <strong>Configure the device settings:</strong> from the home page select <strong>Settings</strong>. Use the following paths and save each page before continuing:
+    <ul>
+      <li><strong>Settings &gt; Networking:</strong> set the <strong>Hostname</strong> and choose <strong>Automatic (DHCP)</strong> or enter the <strong>Static IP</strong>, <strong>Gateway</strong>, <strong>Netmask</strong>, and <strong>DNS</strong>. Select <strong>Save Networking</strong>. Network mode or IP changes may require a reboot.</li>
+      <li><strong>Settings &gt; Sensor Settings:</strong> review the <strong>TDS calibration factor</strong>, <strong>TDS offset (ppm)</strong>, <strong>Temperature offset (C)</strong>, <strong>Temperature compensation cutoff (V)</strong>, <strong>Sample interval (s)</strong>, and <strong>Publish interval (s)</strong>. Select <strong>Save Sensor Settings</strong>.</li>
+      <li><strong>Settings &gt; Time Synchronization:</strong> enter the POSIX <strong>Time zone</strong> string, for example <code>EST5EDT,M3.2.0/2,M11.1.0/2</code>, then select <strong>Apply Time Zone</strong>.</li>
+      <li><strong>Settings &gt; MQTT Settings:</strong> enter <strong>Broker IP / Host</strong>, <strong>Broker port</strong> (normally <code>1883</code>), <strong>Client ID</strong>, <strong>MQTT user</strong>, and <strong>MQTT pass</strong>. Select <strong>Save MQTT Settings</strong>. The page should then report <strong>MQTT Status CONNECTED</strong>.</li>
+      <li><strong>Settings &gt; OTA Settings:</strong> set the <strong>OTA user</strong> and <strong>OTA pass</strong>. Enable <strong>Require Web UI login</strong> when the interface should require authentication, then select <strong>Save OTA Settings</strong>. The same OTA credentials are used for Web UI login.</li>
+    </ul>
+    <p>
+      Direct page paths are <code>/settings/network</code>, <code>/settings/sensors</code>, <code>/settings/time</code>, <code>/settings/mqtt</code>, and <code>/settings/ota</code>. The corresponding save actions are performed by the page buttons; do not browse directly to the save paths.
+    </p>
+  </li>
+  <li>
+    <strong>Verify MQTT and Home Assistant:</strong> return to <code>http://&lt;device-ip&gt;/</code>, open <strong>Settings &gt; MQTT Settings</strong>, and confirm <strong>MQTT Status CONNECTED</strong>. Then check Home Assistant for the automatically discovered device and its entities.
+  </li>
+  <li>
+    <strong>Calibrate the sensor:</strong> go to <strong>Settings &gt; Sensor Settings</strong>, set the calibration factor and offset as required by the reference solution, select <strong>Save Sensor Settings</strong>, and confirm the reading in <strong>Live Measurements</strong> or Home Assistant.
+  </li>
 </ol>
 
 <p>The MQTT topic contract is documented in <a href="docs/mqtt-contract-v1.md">docs/mqtt-contract-v1.md</a>.</p>

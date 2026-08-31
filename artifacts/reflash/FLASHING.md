@@ -30,6 +30,8 @@ That command uses the current `.pio` build output already present in the project
 
 ## Reflash LittleFS only
 
+> **Warning:** Reflashing LittleFS replaces the filesystem partition. Before running this command, open `Settings > Backup & Restore` at `/settings/backup_restore` and download `config.json`. The LittleFS reflash removes the stored configuration and `sensor_readings.csv`; restore `config.json` through the same page after the update, then reboot the controller. If the configuration is not restored, the device identity and MQTT discovery identifiers can change and Home Assistant will need to be reconfigured.
+
 ```bash
 ~/.platformio/penv/bin/pio run -t nobuild -t uploadfs --upload-port /dev/cu.usbserial-XXXX
 ```
