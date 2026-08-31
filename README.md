@@ -21,6 +21,7 @@
   <li><a href="#overview">Overview</a></li>
   <li><a href="#features">Features</a></li>
   <li><a href="#hardware">Hardware</a></li>
+  <li><a href="#device-naming">Device naming</a></li>
   <li><a href="#component-reference">Component reference</a></li>
   <li><a href="#soldering">Soldering the power and controller connections</a></li>
   <li><a href="#buck-converter-5v-jumper">Buck converter 5 V jumper</a></li>
@@ -65,6 +66,29 @@
   <li>5 V supply for the controller board</li>
   <li>Optional 12 V supply and 12-24 V to 5 V buck converter</li>
 </ul>
+
+<h2 id="device-naming">Device naming</h2>
+
+<p>
+  When no custom name is saved, the firmware generates the device name using this format:
+  <code>tds-tmp-sensor-XXXXXX</code>
+</p>
+
+<ul>
+  <li>Prefix: <code>tds-tmp-sensor-</code></li>
+  <li>Suffix: six uppercase hexadecimal characters</li>
+  <li>Identifier source: the ESP8266 value returned by <code>ESP.getChipId()</code>, masked to 24 bits</li>
+</ul>
+
+<p>Example: <code>tds-tmp-sensor-ABC123</code>.</p>
+
+<p>
+  The code does not take the last four characters of the Wi-Fi MAC address. The helper function is named <code>applyDefaultIdentityFromMac()</code>, but its current implementation uses <code>ESP.getChipId()</code> to create a six-character suffix.
+</p>
+
+<p>
+  A custom name can be saved from the network settings page. When set, that name replaces the generated default and is used as the Wi-Fi hostname, the mDNS hostname (<code>http://&lt;device-name&gt;.local</code>), the WiFiManager portal name, and the Home Assistant MQTT discovery device identifier.
+</p>
 
 <h2 id="component-reference">Component reference</h2>
 
