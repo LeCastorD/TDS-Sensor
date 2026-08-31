@@ -35,6 +35,7 @@
   <li><a href="#initial-wi-fi-configuration">Initial Wi-Fi configuration</a></li>
   <li><a href="#default-web-ui-login">Default Web UI login</a></li>
   <li><a href="#first-setup">First setup</a></li>
+  <li><a href="#web-ui-reference">Web UI reference</a></li>
   <li><a href="#home-assistant-interface">Home Assistant interface</a></li>
   <li><a href="#security">Security</a></li>
   <li><a href="#repository-layout">Repository layout</a></li>
@@ -404,6 +405,50 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 </ol>
 
 <p>The MQTT topic contract is documented in <a href="docs/mqtt-contract-v1.md">docs/mqtt-contract-v1.md</a>.</p>
+
+<h2 id="web-ui-reference">Web UI reference</h2>
+
+<p>
+  The following screenshots show the web interface included in the firmware. The paths in the captions are the corresponding device URLs. The displayed measurements, addresses, and configuration values come from one installation and are examples only; replace or redact installation-specific values before publishing if required.
+</p>
+
+<h3>Home page and measurements</h3>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Front-page.png" alt="TDSTMPSensor web interface home page" width="100%"><br><em>Home page: <code>/</code></em></td>
+    <td align="center"><img src="docs/Live-Mesurments.png" alt="TDSTMPSensor live measurements page" width="100%"><br><em>Live Measurements: <code>/measurements</code></em></td>
+  </tr>
+</table>
+
+<h3>Settings and configuration</h3>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/System-settings.png" alt="TDSTMPSensor system settings menu" width="100%"><br><em>System Settings: <code>/settings</code></em></td>
+    <td align="center"><img src="docs/Networkiong.png" alt="TDSTMPSensor networking settings page" width="100%"><br><em>Networking: <code>/settings/network</code></em></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/Sensor-Settings.png" alt="TDSTMPSensor sensor settings page" width="100%"><br><em>Sensor Settings: <code>/settings/sensors</code></em></td>
+    <td align="center"><img src="docs/Time-Sync.png" alt="TDSTMPSensor time synchronization page" width="100%"><br><em>Time Synchronization: <code>/settings/time</code></em></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/MQTT-Settings.png" alt="TDSTMPSensor MQTT settings page" width="100%"><br><em>MQTT Settings: <code>/settings/mqtt</code></em></td>
+    <td align="center"><img src="docs/OTA-Settings.png" alt="TDSTMPSensor OTA settings page" width="100%"><br><em>OTA Settings: <code>/settings/ota</code></em></td>
+  </tr>
+</table>
+
+<h3>Backup, commands, and reset</h3>
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/Backup-Restore.png" alt="TDSTMPSensor backup and restore page" width="100%"><br><em>Backup &amp; Restore: <code>/settings/backup_restore</code></em></td>
+    <td align="center"><img src="docs/MQTT-Commands.png" alt="TDSTMPSensor MQTT command page" width="100%"><br><em>Send MQTT command: <code>/mqtt_send</code></em></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><img src="docs/Reset-Factory.png" alt="TDSTMPSensor Home Assistant discovery reset and factory reset controls" width="70%"><br><em>Reset controls at the bottom of <code>/settings</code></em></td>
+  </tr>
+</table>
 
 <h2 id="home-assistant-interface">Home Assistant interface</h2>
 
