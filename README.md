@@ -31,6 +31,7 @@
   <li><a href="#enclosure-and-assembly">Enclosure and assembly</a></li>
   <li><a href="#build-with-platformio">Build with PlatformIO</a></li>
   <li><a href="#upload-firmware">Upload firmware</a></li>
+  <li><a href="#initial-wi-fi-configuration">Initial Wi-Fi configuration</a></li>
   <li><a href="#first-setup">First setup</a></li>
   <li><a href="#home-assistant-interface">Home Assistant interface</a></li>
   <li><a href="#security">Security</a></li>
@@ -289,6 +290,24 @@ pio run -t uploadfs --upload-port &lt;PORT&gt;</code></pre>
 
 <p>
   The first command uploads the firmware. The second uploads the LittleFS web interface and filesystem data. For the exported release images, see <a href="artifacts/reflash/FLASHING.md">artifacts/reflash/FLASHING.md</a>.
+</p>
+
+<h2 id="initial-wi-fi-configuration">Initial Wi-Fi configuration</h2>
+
+<p>
+  This project uses <a href="https://github.com/tzapu/WiFiManager">WiFiManager</a> to configure the wireless network without hard-coding an SSID or password in the firmware. The official WiFiManager project provides the library documentation, examples, and configuration details.
+</p>
+
+<ol>
+  <li>Power the device with no saved Wi-Fi credentials, or clear its previous network configuration.</li>
+  <li>Wait for the controller to start its WiFiManager configuration access point. The access-point name is the current device name, for example <code>tds-tmp-sensor-ABC123</code>.</li>
+  <li>Connect a phone or computer to that temporary access point. A captive portal should open automatically; if it does not, open the configuration page shown by WiFiManager.</li>
+  <li>Select the local Wi-Fi network, enter its password, and save the configuration.</li>
+  <li>After the controller restarts or reconnects, return to the normal Wi-Fi network and open the device using its assigned IP address or mDNS name, such as <code>http://tds-tmp-sensor-ABC123.local</code>.</li>
+</ol>
+
+<p>
+  The firmware calls <code>wm.autoConnect(deviceName)</code> during startup. Once credentials are saved, it attempts to reconnect automatically on later boots. For WiFiManager-specific behavior and troubleshooting, see the <a href="https://github.com/tzapu/WiFiManager">official WiFiManager documentation</a>.
 </p>
 
 <h2 id="first-setup">First setup</h2>
