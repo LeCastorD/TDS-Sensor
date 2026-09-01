@@ -40,6 +40,7 @@
   <li><a href="#security">Security</a></li>
   <li><a href="#repository-layout">Repository layout</a></li>
   <li><a href="#license">License</a></li>
+  <li><a href="#disclaimer">Disclaimer</a></li>
 </ul>
 
 <h2 id="overview">Overview</h2>
@@ -523,3 +524,7 @@ platformio.ini          PlatformIO project configuration</code></pre>
 <h2 id="license">License</h2>
 
 <p>This project is licensed under the MIT License. See <a href="LICENSE">LICENSE</a> for the full text.</p>
+
+<h2 id="disclaimer">Disclaimer</h2>
+
+<p>Parts of this project were developed with the help of AI tools. The project should be reviewed, tested, and validated before use.</p>
