@@ -223,6 +223,11 @@
 
 <h2 id="wiring">Wiring</h2>
 
+<p align="center">
+  <img src="docs/Technical_Drawing.jpg" alt="TDSTMPSensor technical wiring drawing showing the buck converter, Wemos, TDS sensor, and temperature sensor connections" width="100%"><br>
+  <em>Technical wiring drawing: 12 V supply to the buck converter, buck converter 5 V output to the Wemos, and Wemos 3.3 V power to both sensors.</em>
+</p>
+
 <table>
   <thead>
     <tr>
