@@ -53,6 +53,14 @@
   <strong>TDS range limitation:</strong> the DFRobot SEN0244 has a specified measurement range of <strong>0 to 1000 ppm</strong>. A calculated value above 1000 ppm is outside the sensor's validated recognition range and should not be treated as an accurate measurement; the sensor cannot reliably distinguish higher concentrations. The firmware may still display values above 1000 ppm because its analog calculation is not hard-clamped, but changing the calibration factor does not extend the physical sensor range. See the <a href="https://wiki.dfrobot.com/sen0244/">DFRobot SEN0244 specifications</a> for the manufacturer's range and accuracy information.
 </p>
 
+<p>
+  <strong>Wi-Fi limitations:</strong> the Wemos D1 Mini used by this project is based on the ESP8266 and supports 2.4 GHz 802.11 b/g/n Wi-Fi, not 5 GHz Wi-Fi. For reliable onboarding and operation, use a dedicated 2.4 GHz network configured for b/g/n compatibility rather than a 5 GHz-only or 802.11ac-only network. Modern access points can sometimes handle this through backward-compatible mixed modes, but a separate legacy-compatible SSID is recommended when the device has connection problems.
+</p>
+
+<p>
+  The standard Wemos board is best placed within good Wi-Fi coverage. If there is no nearby repeater or access point, consider a compatible ESP8266 board with an external antenna connector, such as an IPEX/U.FL or SMA connector, and a suitable antenna. An external antenna can improve placement flexibility and coverage, but actual performance depends on the antenna, cable, enclosure, and access point. Verify pin compatibility and physical fit before substituting the controller; see the <a href="https://docs.wemos.cc/en/latest/d1/d1_mini.html">WEMOS D1 mini documentation</a>, the <a href="https://docs.wemos.cc/en/latest/d1/d1_mini_pro.html">WEMOS D1 mini Pro documentation</a>, and the <a href="https://documentation.espressif.com/0a-esp8266ex_datasheet_en.html">Espressif ESP8266EX datasheet</a> for board and radio details.
+</p>
+
 <h2 id="features">Features</h2>
 
 <ul>
