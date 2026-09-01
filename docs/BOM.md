@@ -36,9 +36,9 @@
     </td>
     <td valign="top">
       <h3>Lever wire connectors</h3>
-      <p><strong>Quantity:</strong> 1 set</p>
-      <p>Two three-position electrical lever connectors for serviceable power wiring.</p>
-      <p><em>Reference image not available.</em></p>
+      <p><strong>Quantity:</strong> 4</p>
+      <p>Three-position electrical lever connectors for serviceable power wiring.</p>
+      <p align="center"><img src="Lever_wire_connectors.jpeg" alt="Three-position lever wire connector block" width="180"></p>
     </td>
     <td valign="top">
       <h3>JST-XH connector kit</h3>
@@ -84,6 +84,14 @@
       <h3>Printable enclosure parts</h3>
       <p><strong>Quantity:</strong> 1 set</p>
       <p>Print the enclosure box and the PCB/sensor support plate.</p>
+      <p align="center">
+        <img src="Mounting_Plate.jpg" alt="3D preview of the printed PCB and sensor mounting plate" width="180"><br>
+        <em>Mounting plate preview</em>
+      </p>
+      <p align="center">
+        <img src="Enclosure_box.jpg" alt="3D preview of the printed enclosure box" width="180"><br>
+        <em>Enclosure box preview</em>
+      </p>
       <p><a href="../Enclosure%20and%20mount/Box.3mf">Box.3mf</a><br><a href="../Enclosure%20and%20mount/Sensor%20Plate.3mf">Sensor Plate.3mf</a></p>
     </td>
   </tr>
